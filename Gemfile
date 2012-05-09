@@ -4,6 +4,9 @@ gem 'rake'
 gem 'sinatra', '~> 1.2.3'
 gem 'shotgun', '~> 0.9'
 gem 'haml', '~> 3.1.4'
+gem "rpeg-markdown", "~> 1.4.6"
+gem "mongoid", "~> 2.4"
+gem "bson_ext", "~> 1.5"
 
 # Sass & Compass
 gem 'sass', '~> 3.1.12'
