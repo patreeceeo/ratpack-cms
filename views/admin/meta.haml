@@ -1,0 +1,10 @@
+
+%form(action="meta" method="post" id="meta-form")
+  %fieldset
+    %dl
+      %dt
+        %label(for="title") Site-wide title:
+      %dd
+        %input(type="text" name="title" value="#{App[:title]}")
+  %fieldset
+    %input(type="submit" value="Save")

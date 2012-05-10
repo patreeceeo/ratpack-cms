@@ -20,4 +20,5 @@ gem 'grid-coordinates', '~> 1.1.4'
 group :development do
   gem 'rspec'
   gem 'ZenTest'
+  gem 'pry'
 end

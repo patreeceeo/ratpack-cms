@@ -15,10 +15,12 @@ set :views, 'views'
 set :public_folder, 'public'
 set :haml, {:format => :html5} # default Haml format is :xhtml
 
-# Uncomment to use cookies to store session data
-#enable :sessions
-use Rack::Session::Pool, :expire_after => 2592000
-#class RatPack < Sinatra::Application
+App = {}
+App[:title] = "RatPack, a CMS with class."
+
+enable :sessions
+#use Rack::Session::Pool, :expire_after => 2592000
+# This seems to be needed to get tests to run.
 session ||= {}
 
 def init_session
@@ -29,13 +31,12 @@ def init_session
   end
 end
 
-
 def login(username, password) 
   if username == USERNAME and password == PASSWORD
     puts "admin logged in\n"
     session[:admin][:logged_in] = true
   else
-    session[:admin][:logged_in] = false
+    false
   end
 end
 
@@ -75,11 +76,26 @@ get '/logout' do
   haml :logout, :layout => :'layouts/application'
 end
 
-
-get '/admin' do
+before '/admin*' do
   if not logged_in?(USERNAME)
     puts "attempt to get /admin when admin not logged in\n"
     redirect to("/login")
   end
-  haml :admin_home, :layout => :"layouts/admin"
+end
+
+get '/admin' do
+  haml :'admin/index', :layout => :"layouts/admin"
+end
+
+get '/admin/:page' do
+  page = params[:page]
+  haml :"admin/#{page}", :layout => :"layouts/admin"
+end
+
+post '/admin/meta' do
+  params.each_pair do |key, value|
+    puts "Setting '#{key}' to '#{value}'"
+    App[:"#{key}"] = value
+  end
+  redirect to("/admin/meta")
 end

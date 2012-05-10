@@ -4,7 +4,9 @@
     %meta{:'http-equiv' => "Content-Type", :content => "text/html; charset=utf-8"}
     %meta{:name => "lang", :content => "en"}
     <meta loginstatus='logged out' />
-    %title Sinatra Bootstrap
+    %title= App[:title]
+    %script{:type => "text/javascript", :src => "/javascripts/application.js"}
+    %link{:href=>'/stylesheets/application.css', :media => "screen", :rel => 'stylesheet', :type => "text/css"}
     = partial :_assets 
   %body
     = partial :_main_nav

@@ -28,8 +28,14 @@ describe "Admin Login/Logout Feature" do
     last_response.body.should include("loginstatus='logged out'");
   end
 
-  it "should not let you access an admin page when logged out." do
+  it "should not let you access the admin index page when logged out." do
     get "/admin"
+    follow_redirect!
+    last_response.body.should include("loginstatus='logged out'");
+  end
+
+  it "should not let you access an admin page when logged out." do
+    get "/admin/meta"
     follow_redirect!
     last_response.body.should include("loginstatus='logged out'");
   end
@@ -39,4 +45,15 @@ describe "Admin Login/Logout Feature" do
     get "/logout"
     last_response.body.should include("loginstatus='logged out'");
   end
+end
+
+describe "Admin meta page" do
+  include Rack::Test::Methods
+
+  it "should let you update page titles" do
+    random_title = "dsjhf8sdf[dfhjdfs437dbabah"
+    post "/admin/meta", params = {:title => random_title}
+    get "/"
+    last_response.body.should include("<title>#{random_title}</title>")
+  end 
 end

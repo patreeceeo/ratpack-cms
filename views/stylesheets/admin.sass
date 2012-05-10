@@ -1,0 +1,47 @@
+@import compass/reset
+@import compass/utilities
+@import compass/css3
+
+$margin-x: 30px
+$margin-y: 1em
+
+$color-grey: #e7e7e7
+
+body
+  line-height: 1.5em
+  margin: $margin-y $margin-x
+
+h1
+  font-size: 3em
+  line-height: 1.5em
+  font-weight: bold
+h2
+  font-size: 2em
+  line-height: 1em
+  font-weight: bold
+
+th
+  text-align: left
+  font-weight: bold
+
+th, td
+  padding-right: $margin-x
+  padding-left: $margin-x
+  line-height: 2em
+
+tr:nth-child(odd)
+  background-color: $color-grey
+
+ul
+  +border-radius(6px)
+  background-color: $color-grey
+  border: 1px solid #ccc
+  li
+    display: inline
+    line-height: 2em
+    padding: 0 15px
+    a
+      color: #000
+      text-decoration: none
+      &:hover
+        text-decoration: underline
