@@ -8,6 +8,7 @@ gem 'maruku'
 gem "mongoid", "~> 2.4"
 gem "bson_ext", "~> 1.5"
 gem "rack"
+gem "thin"
 
 # Sass & Compass
 gem 'sass', '~> 3.1.12'
