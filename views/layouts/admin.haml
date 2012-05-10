@@ -3,10 +3,10 @@
   %head
     %meta{:'http-equiv' => "Content-Type", :content => "text/html; charset=utf-8"}
     %meta{:name => "lang", :content => "en"}
-    <meta loginstatus='logged out' />
+    <meta loginstatus='logged in' />
     %title Sinatra Bootstrap
     = partial :_assets 
   %body
-    = partial :_main_nav
+    = partial :_admin_nav
     = yield
     = partial :_analytics
