@@ -1,6 +1,9 @@
 require 'rubygems'
 require 'sinatra'
 require 'haml'
+require 'mongoid'
+require 'yaml'
+YAML::ENGINE.yamler='syck'
 
 # Helpers
 require './lib/render_partial'
@@ -14,9 +17,25 @@ set :root, File.dirname(__FILE__)
 set :views, 'views'
 set :public_folder, 'public'
 set :haml, {:format => :html5} # default Haml format is :xhtml
+# set :environment, :development
 
-App = {}
-App[:title] = "RatPack, a CMS with class."
+
+
+
+configure do
+  Mongoid.configure do |config|
+    name = "ratpack"
+    host = "localhost"
+    config.master = Mongo::Connection.new.db(name)
+  end
+end
+
+class MetaDoc 
+  include Mongoid::Document
+  field :title, type: String 
+end
+meta_doc = MetaDoc.all_of.first || MetaDoc.create!
+meta_doc.title ||= "RatPack, the CMS with class!"
 
 enable :sessions
 #use Rack::Session::Pool, :expire_after => 2592000
@@ -48,11 +67,12 @@ end
 def logged_in?(username)
   session[:admin][:logged_in]
 end
-#end
 
 before do
   init_session
 end
+
+set :haml, :locals => {:meta_doc => meta_doc}
 
 # Application routes
 get '/' do
@@ -89,13 +109,15 @@ end
 
 get '/admin/:page' do
   page = params[:page]
-  haml :"admin/#{page}", :layout => :"layouts/admin"
+  haml :"admin/#{page}", :layout => :"layouts/admin" 
 end
 
 post '/admin/meta' do
+  puts "posting to /admin/meta"
   params.each_pair do |key, value|
-    puts "Setting '#{key}' to '#{value}'"
-    App[:"#{key}"] = value
+    puts "setting #{key} to '#{value}'"
+    meta_doc[:"#{key}"] = value
   end
+  meta_doc.save!
   redirect to("/admin/meta")
 end

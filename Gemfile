@@ -22,4 +22,5 @@ group :development do
   gem 'rspec'
   gem 'ZenTest'
   gem 'pry'
+  gem 'mongoid-rspec'
 end

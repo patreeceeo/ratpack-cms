@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + "/../app.rb"
 require "rack/test"
+require "mongoid"
 
 set :environment, :test
 
@@ -50,9 +51,14 @@ end
 describe "Admin meta page" do
   include Rack::Test::Methods
 
+  before :each do
+    post "/login", params = {:username => USERNAME, :password => PASSWORD}
+  end
+
   it "should let you update page titles" do
     random_title = "dsjhf8sdf[dfhjdfs437dbabah"
     post "/admin/meta", params = {:title => random_title}
+    follow_redirect!
     get "/"
     last_response.body.should include("<title>#{random_title}</title>")
   end 
