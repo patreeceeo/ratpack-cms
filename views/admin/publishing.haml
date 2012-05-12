@@ -1,0 +1,20 @@
+
+%form(action="publishing/pages" method="post" id="publishing-form")
+  %fieldset(name="page")
+    %legend Create a Page
+    %dl
+      %dt
+        %label(for="title") Name (must be alphanumeric only):
+      %dd
+        %input(type="text" name="name")
+      %dt
+        %label(for="title") Path
+      %dd
+        %input(type="text" name="path")
+      %dt
+        %label(for="title") Title
+      %dd
+        %input(type="text" name="title")
+      %input(type="hidden" name="action" value="create")
+  %fieldset
+    %input(type="submit" value="Create")

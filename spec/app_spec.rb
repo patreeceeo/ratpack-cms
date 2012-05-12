@@ -3,10 +3,13 @@ require "rack/test"
 require "mongoid"
 
 set :environment, :test
+enable :sessions
+ENV['RACK_ENV'] = 'test'
 
 def app
   Sinatra::Application
 end
+
 
 describe "Admin Login/Logout Feature" do
   include Rack::Test::Methods
@@ -48,11 +51,12 @@ describe "Admin Login/Logout Feature" do
   end
 end
 
-describe "Admin meta page" do
+describe "Admin Pages" do
   include Rack::Test::Methods
 
   before :each do
-    post "/login", params = {:username => USERNAME, :password => PASSWORD}
+    puts "logging in our tester"
+    post "/login", params = {username: USERNAME, password: PASSWORD}
   end
 
   it "should let you update page titles" do
@@ -62,4 +66,18 @@ describe "Admin meta page" do
     get "/"
     last_response.body.should include("<title>#{random_title}</title>")
   end 
+
+  it "should let you create pages" do
+    puts "trying to create a page"
+    post "admin/publishing/pages", params = {:action => :create, name: "test_page", path: ""}
+    last_response.should be_ok
+  end
+
+#  it "should let you create pages" do
+#    puts "trying to create a page"
+#    post "admin/publishing/pages", params = {:action => :create, name: "test_page", path: ""}
+#    get "/test_page"
+#    last_response.should be_ok
+#  end
+
 end
